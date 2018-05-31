@@ -3,25 +3,35 @@ package com.spite.scriping;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="sc_wikipedia")
 public class DumpEntry implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Date timestamp;
+	@Id
+	private Date gettime;
 	private String id;
 	private String ref;
 	private String status;
 
-	public DumpEntry(Date timestamp, String id, String ref, String status) {
-		this.timestamp = timestamp;
+	public DumpEntry() {
+	}
+	
+	public DumpEntry(Date gettime, String id, String ref, String status) {
+		this.gettime = gettime;
 		this.id = id;
 		this.ref = ref;
 		this.status = status;
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
+	public Date getTGettime() {
+		return gettime;
 	}
 
 	public String getId() {
@@ -46,14 +56,14 @@ public class DumpEntry implements Serializable {
 		if (!id.equals(dumpEntry.id)) return false;
 		if (!ref.equals(dumpEntry.ref)) return false;
 		if (!status.equals(dumpEntry.status)) return false;
-		if (!timestamp.equals(dumpEntry.timestamp)) return false;
+		if (!gettime.equals(dumpEntry.gettime)) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = timestamp.hashCode();
+		int result = gettime.hashCode();
 		result = 31 * result + id.hashCode();
 		result = 31 * result + ref.hashCode();
 		result = 31 * result + status.hashCode();
@@ -63,7 +73,7 @@ public class DumpEntry implements Serializable {
 	@Override
 	public String toString() {
 		return "DumpEntry{" +
-				"timestamp=" + timestamp +
+				"timestamp=" + gettime +
 				", id='" + id + '\'' +
 				", ref='" + ref + '\'' +
 				", status='" + status + '\'' +

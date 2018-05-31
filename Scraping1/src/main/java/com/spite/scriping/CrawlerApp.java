@@ -17,7 +17,10 @@ import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.scheduling.PollerMetadata;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.support.PeriodicTrigger;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -36,6 +39,9 @@ public class CrawlerApp {
 
 	@Autowired
 	private CrawlerConfig config;
+	
+	@Autowired
+	private ScripingService service;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -43,11 +49,21 @@ public class CrawlerApp {
 	}
 
 	@MessageEndpoint
-	public static class Endpoint {
+	public class Endpoint {
+		
 		@ServiceActivator(inputChannel="channel4")
 		public void log(DumpEntry payload) {
 			LOG.info("entry={}", payload);
+	    	//ScripingService service = new ScripingService();
+	        service.insert(payload);
+	        LOG.info("データコミット");
 		}
+		
+//		@ServiceActivator(inputChannel="channel4")
+//	    public List<entity> get() {
+//	    	ScripingService service = new ScripingService();
+//	        return service.insert();
+//	    }
 	}
 
 	@Bean

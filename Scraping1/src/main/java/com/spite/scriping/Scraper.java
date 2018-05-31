@@ -12,6 +12,7 @@ import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.Splitter;
 import org.springframework.integration.annotation.Transformer;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,7 +64,8 @@ public class Scraper {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		format.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-		Date timestamp = format.parse(dateStr);
+		Date date = format.parse(dateStr);
+		Timestamp timestamp = new Timestamp(date.getTime());
 
 		Elements list = payload.select("a");
 		String id;
