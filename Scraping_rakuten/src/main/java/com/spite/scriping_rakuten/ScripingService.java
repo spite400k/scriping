@@ -1,6 +1,7 @@
 package com.spite.scriping_rakuten;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class ScripingService {
 //        return dao.findAll();
 //    }
 
-	public Map<String, DumpEntry> insert(DumpEntry payload) {
-		DumpEntry result = repository.save(payload);
+	public Map<String, Iterable<DumpEntry>> insert(List<DumpEntry> payload) {
+		Iterable<DumpEntry> result = repository.saveAll(payload);
 	    return Collections.singletonMap("payload", result);
 	    
 		//return (List<EntityWiki>) repository.findAll();

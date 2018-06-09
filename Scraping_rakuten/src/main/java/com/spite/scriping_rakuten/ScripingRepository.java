@@ -6,6 +6,6 @@ public interface ScripingRepository extends CrudRepository <DumpEntry, Long> {
 	
 	//Page<Configurations> findAll(Pageable pageable);
 	
-	Iterable<DumpEntry> findByRef(String ref);
+	Iterable<DumpEntry> findByItemCode(String itemCode);
  
 }

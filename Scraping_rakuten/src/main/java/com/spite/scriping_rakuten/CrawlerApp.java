@@ -19,6 +19,8 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 @Configuration
@@ -48,12 +50,12 @@ public class CrawlerApp {
 	@MessageEndpoint
 	public class Endpoint {
 		
-		@ServiceActivator(inputChannel="channel2")
-		public void log(DumpEntry payload) {
-			LOG.info("entry={}", payload);
+		@ServiceActivator(inputChannel="channel4")
+		public void log(List<DumpEntry> payload) {
+			//LOG.info("entry={}", payload);
 	    	//ScripingService service = new ScripingService();
-	        //service.insert(payload);
-	        //LOG.info("データコミット");
+	        service.insert(payload);
+	        LOG.info("データコミット");
 		}
 		
 //		@ServiceActivator(inputChannel="channel4")

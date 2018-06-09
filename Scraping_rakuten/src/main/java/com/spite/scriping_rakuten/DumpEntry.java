@@ -1,82 +1,46 @@
 package com.spite.scriping_rakuten;
 
-import java.io.Serializable;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@Data
 @Entity
-@Table(name="sc_wikipedia")
-public class DumpEntry implements Serializable {
+@Table(name="sc_rakuten")
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
+@Builder
+public class DumpEntry extends TimestampEntity{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+
 	@Id
-	private Date gettime;
-	private String id;
-	private String ref;
-	private String status;
-
-	public DumpEntry() {
-	}
+	private String itemCode;
 	
-	public DumpEntry(Date gettime, String id, String ref, String status) {
-		this.gettime = gettime;
-		this.id = id;
-		this.ref = ref;
-		this.status = status;
-	}
+	//@Column(nullable = false)
+	private String itemName;
+	private Integer itemPrice;
+	private String catchcopy;
+	private String itemCaption;
+	private String itemUrl;
+	private String shopUrl;
+	private String shopCode;
+	private String shopName;
+	private String genreId;
+	private BigDecimal reviewAverage;
+	//private Timestamp INSDT;
 
-	public Date getTGettime() {
-		return gettime;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public String getRef() {
-		return ref;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof DumpEntry)) return false;
-
-		DumpEntry dumpEntry = (DumpEntry) o;
-
-		if (!id.equals(dumpEntry.id)) return false;
-		if (!ref.equals(dumpEntry.ref)) return false;
-		if (!status.equals(dumpEntry.status)) return false;
-		if (!gettime.equals(dumpEntry.gettime)) return false;
-
-		return true;
-	}
-
-	@Override
-	public int hashCode() {
-		int result = gettime.hashCode();
-		result = 31 * result + id.hashCode();
-		result = 31 * result + ref.hashCode();
-		result = 31 * result + status.hashCode();
-		return result;
-	}
-
-	@Override
-	public String toString() {
-		return "DumpEntry{" +
-				"timestamp=" + gettime +
-				", id='" + id + '\'' +
-				", ref='" + ref + '\'' +
-				", status='" + status + '\'' +
-				'}';
-	}
 }

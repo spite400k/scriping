@@ -25,13 +25,14 @@ public class Downloader {
 	
 	private static String FORMAT = "json";
 	private static String FORMAT_VERSION = "2";
-	private static String HITS = "30";
 	private static String applicationId = "1011720797907834280";
 	private static String affiliateId = "16b9aabf.bdd13f56.16b9aac0.e81b9a3f";
 	private static String keyword = "";
 	private static String genreId = "";
 	private static String page = "1";
-	private static String sort = "standard";
+	
+	private static String sort = "standard";//並び順
+	private static String HITS = "30"; //一度に取得する件数
 	private static String shopCode = "rakuten24";
 	
 	@Autowired

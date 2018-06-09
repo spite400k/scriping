@@ -12,20 +12,20 @@ import javax.persistence.PreUpdate;
 @MappedSuperclass    // JPAエンティティの親に必要。
 public abstract class TimestampEntity {
 
-  public Timestamp updatedTime;
+  public Timestamp UPDDT;
 
   @Column(updatable=false)
-  public Timestamp createdTime;
+  public Timestamp INSDT;
 
   @PrePersist
   public void prePersist() {
     Timestamp ts = new Timestamp((new Date()).getTime());
-    this.createdTime = ts;
-    this.updatedTime = ts;
+    this.INSDT = ts;
+    this.UPDDT = ts;
     }
 
   @PreUpdate
   public void preUpdate() {
-    this.updatedTime = new Timestamp((new Date()).getTime());
+    this.UPDDT = new Timestamp((new Date()).getTime());
   }
 }

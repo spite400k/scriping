@@ -1,18 +1,23 @@
 package com.spite.scriping_rakuten;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.nodes.Element;
+import org.springframework.expression.ParseException;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.Splitter;
+import org.springframework.integration.annotation.Transformer;
 
 @MessageEndpoint
 public class Scraper {
 
-	@Splitter(inputChannel = "channel1", outputChannel = "channel2")
-	public List<Element> scrape(HashMap<String, Object> payload) {
+	@Splitter(inputChannel = "channel1", outputChannel = "channel3")
+	public HashMap<String, Object> scrape(HashMap<String, Object> payload) {
 
 		final List<Element> anchorList = new ArrayList<Element>();
 
@@ -27,7 +32,7 @@ public class Scraper {
 		System.out.println(listKeys.toString());
 
 		//return new ArrayList(DumpEntry(timestamp, id, ref, status));
-		return anchorList ;
+		return payload ;
 	}
 //
 //	@Filter(inputChannel = "channel2", outputChannel = "channel3")
@@ -36,31 +41,46 @@ public class Scraper {
 //		return m.find();
 //	}
 //
-//	@Transformer(inputChannel = "channel3", outputChannel = "channel4")
-//	public DumpEntry convert(Element payload) throws ParseException {
-//		String dateStr = payload.ownText().substring(0, 19);
-//
-//		DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//		format.setTimeZone(TimeZone.getTimeZone("GMT"));
-//
-//		Date date = format.parse(dateStr);
-//		Timestamp timestamp = new Timestamp(date.getTime());
-//
-//		Elements list = payload.select("a");
-//		String id;
-//		String ref;
-//		if (list.size() > 0) {
-//			Element a = list.get(0);
-//			id = a.ownText();
-//			ref = a.attr("href");
-//		} else {
-//			id = "private data";
-//			ref = null;
-//		}
-//
-//		Element span = payload.select("span").get(0);
-//		String status = span.ownText();
-//
-//		return new DumpEntry(timestamp, id, ref, status);
-//	}
+	@Transformer(inputChannel = "channel3", outputChannel = "channel4")
+	public List<DumpEntry> convert(HashMap<String, Object> payload) throws ParseException {
+		//String dateStr = payload.ownText().substring(0, 19);
+
+		//DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		//format.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		//Date date = format.parse(dateStr);
+		//Timestamp timestamp = new Timestamp(date.getTime());
+
+		String id;
+		String ref;
+		id = "private data";
+		ref = null;
+		List<DumpEntry> entryList = new ArrayList<DumpEntry>();
+		List<Map> items = (List<Map>) payload.get("Items");
+		for (Map item: items) {
+			String itemCode = (String) item.get("itemCode");
+			String itemName = (String) item.get("itemName");
+			Integer itemPrice = (Integer) item.get("itemPrice");
+			String catchcopy = (String) item.get("catchcopy");
+			String itemCaption = (String) item.get("itemCaption");
+			String itemUrl = (String) item.get("itemUrl");
+			String shopUrl = (String) item.get("shopUrl");
+			String shopCode = (String) item.get("shopCode");
+			String shopName = (String) item.get("shopName");
+			String genreId = (String) item.get("genreId");
+			// 評価は0 もしくは小数点あり
+//			Integer s = (Integer) item.get("reviewAverage");
+//			Double d = (Double)item.get("reviewAverage");
+//			BigDecimal reviewAverage = new BigDecimal(d).setScale(
+//                    2, BigDecimal.ROUND_HALF_DOWN );
+			
+			BigDecimal reviewAverage = new BigDecimal(0);
+			//Timestamp instdt = new Timestamp(System.currentTimeMillis());
+			
+			DumpEntry entry = new DumpEntry(itemCode, itemName, itemPrice, catchcopy, itemCaption, itemUrl, shopUrl, shopCode, shopName, genreId, reviewAverage);
+			entryList.add(entry);
+		}
+		
+		return entryList;
+	}
 }
